@@ -9,8 +9,12 @@ export async function run(day: string) {
     await read(fromHere(`solutions/${day}` + "/input.txt"), "utf8")
   ).trim();
 
+  var firstStarStart = performance.now();
   await solveForFirstStar(input);
+  report('First star took ' + (performance.now()-firstStarStart)+ 'ms');
+  var secondStarStart = performance.now();
   await solveForSecondStar(input);
+  report('Second star took ' + (performance.now()-secondStarStart)+ 'ms');
 }
 
 async function solveForFirstStar(input) {
