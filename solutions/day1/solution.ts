@@ -13,44 +13,39 @@ export async function run(day: string) {
 }
 
 async function solveForFirstStar(input) {
-  var solution = "UNSOLVED";
+  var solution;
   var lines = input.split('\n');
 
-  //report("Input:", input);
-  lines.forEach(e1 => {
-    lines.forEach(e2 => {
-      var n1: number = +e1;
-      var n2: number = +e2;
-      let sum = n1 + n2;
-      if (sum === 2020) {
+  for (var i1 = 0; i1 < lines.length; i1++) {
+    for (var i2 = i1 +1; i2 < lines.length; i2++) {
+      var n1: number = +lines[i1];
+      var n2: number = +lines[i2];
+      if( n1 + n2 === 2020) {
         solution = (n1 * n2).toString();
       }
-    });
-  });
+    }
+  }
 
   report("Solution 1:", solution);
   
 }
 
 async function solveForSecondStar(input) {
-  var solution = "UNSOLVED";
+  var solution;
   var lines = input.split('\n');
 
-  //report("Input:", input);
-  lines.forEach(e1 => {
-    lines.forEach(e2 => {
-      lines.forEach(e3 => {
-        var n1: number = +e1;
-        var n2: number = +e2;
-        var n3: number = +e3;
-        let sum = n1 + n2 + n3;
-        if (sum === 2020) {
+  for (var i1 = 0; i1 < lines.length; i1++) {
+    for (var i2 = i1 +1; i2 < lines.length; i2++) {
+      for( var i3 = i2 + 1; i3 < lines.length; i3++) {
+        var n1: number = +lines[i1];
+        var n2: number = +lines[i2];
+        var n3: number = +lines[i3];
+        if( n1 + n2 + n3 === 2020) {
           solution = (n1 * n2 * n3).toString();
         }
-  
-      });
-    });
-  });
+      }
+    }
+  }
 
   report("Solution 2:", solution);
   
