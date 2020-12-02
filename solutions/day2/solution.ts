@@ -10,19 +10,20 @@ export async function run(day: string) {
   ).trim();
 
   var passwords = input.split('\n').map(line=> {
-    var parts = line.split(':');
-    var password = parts[1].trim();
-    var rulesParts = parts[0].split(' ');
-    var requiredLetter = rulesParts[1];
-    var countParts = rulesParts[0].split('-');
-    var firstNum = +countParts[0];
-    var secondNum = +countParts[1];
-    return {
-      firstNum: firstNum,
-      secondNum: secondNum,
-      letter: requiredLetter,
-      password: password
+    // 15-16 m: mhmjmzrmmlmmmmmm
+    const regex = /(\d+)-(\d+)\s(\w+):\s(\w+)/g;
+
+    var result = regex.exec(line);
+    if ( result === null) return false;
+
+    var o = {
+      firstNum: result[1],
+      secondNum: result[2],
+      letter: result[3],
+      password: result[4]
     }
+
+    return o;
   })
 
   var firstStarStart = performance.now();
