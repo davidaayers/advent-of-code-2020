@@ -45,11 +45,6 @@ async function solveForSecondStar(passwords) {
   var solution = passwords.filter( pw => {
     var letterAtPos1 = pw.password.substring(pw.firstNum-1,pw.firstNum);
     var letterAtPos2 = pw.password.substring(pw.secondNum-1,pw.secondNum);
-
-    console.log('Work on:' + JSON.stringify(pw));
-    console.log('pos1 ' + pw.firstNum + ' letter ' + letterAtPos1)
-    console.log('pos2 ' + pw.secondNum + ' letter ' + letterAtPos2)
-
     return (letterAtPos1 === pw.letter || letterAtPos2 === pw.letter) &&
       !(letterAtPos1 === pw.letter && letterAtPos2 === pw.letter);
   }).length;
