@@ -10,7 +10,7 @@ export async function run(day: string) {
   ).trim();
 
   var lines = input.split('\n');
-  var repeatRight = Math.ceil(lines.length * 3 / lines[0].length);
+  var repeatRight = Math.ceil(lines.length * 7 / lines[0].length);
 
   var forestMap = lines.map(line => {
     return line.repeat(repeatRight);
@@ -20,13 +20,29 @@ export async function run(day: string) {
   await solveForFirstStar(forestMap);
   report('First star took ' + (performance.now()-firstStarStart)+ 'ms');
   var secondStarStart = performance.now();
-  await solveForSecondStar(input);
+  await solveForSecondStar(forestMap);
   report('Second star took ' + (performance.now()-secondStarStart)+ 'ms');
 }
 
 async function solveForFirstStar(forestMap:Array<String>) {
   var treeCnt = solve(3,1,forestMap);
   report("First star solution:", treeCnt.toString());
+}
+
+async function solveForSecondStar(forestMap:Array<String>) {
+  var deltas = [
+    [1,1],
+    [3,1],
+    [5,1],
+    [7,1],
+    [1,2],
+  ]
+
+  var treeCnt = deltas.map(d => {
+    return solve(d[0],d[1],forestMap);
+  }).reduce((a,b) => a * b, 1);
+  
+  report("Second star solution:", treeCnt.toString());
 }
 
 function solve(dx:number,dy:number,forestMap:Array<String>):number {
@@ -40,9 +56,4 @@ function solve(dx:number,dy:number,forestMap:Array<String>):number {
     y += dy;
   }
   return treeCnt;
-}
-
-async function solveForSecondStar(input) {
-  const solution = "UNSOLVED";
-  report("Second star solution:", solution);
 }
