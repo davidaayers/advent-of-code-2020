@@ -61,6 +61,18 @@ async function solveForFirstStar(input) {
 }
 
 async function solveForSecondStar(input) {
-  const solution = "UNSOLVED";
-  report("Second star solution:", solution);
+  var seats = input.split('\n').map(i => {
+    return decodeBoardingPassString(i);
+  }).map(bp => {return bp.seatId}).sort(function(a, b){return a-b});
+
+  var solution = -1;
+  for (var idx = 0; idx < seats.length - 1; idx ++) {
+    var idxAfter = idx + 1;
+    if ( seats[idx] + 1 != seats[idxAfter]) {
+      solution = seats[idx] + 1;
+      break;
+    }
+  }
+
+  report("Second star solution:", solution.toString());
 }
