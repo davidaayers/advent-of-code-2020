@@ -2,7 +2,7 @@ import { decodeBoardingPassString, BoardingPass } from "./solution"
 import { expect } from 'chai';
 import 'mocha';
 
-describe ('decodeBoardPass Test', () => {
+describe ('Day 5', () => {
   var expected = {
     'FBFBBFFRLR': <BoardingPass>{ row: 44, column: 5, seatId: 357 },
     'BFFFBBFRRR': <BoardingPass>{ row: 70, column: 7, seatId: 567 },

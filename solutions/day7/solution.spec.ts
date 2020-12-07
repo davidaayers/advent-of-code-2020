@@ -2,7 +2,7 @@ import { parseLine,parseInput,findMatchingBags,countNestedBags } from "./solutio
 import { expect } from 'chai';
 import 'mocha';
 
-describe ('Parse Input Test', () => {
+describe ('Day 7', () => {
   it('should parse single line ', () => {
     var bag = parseLine('plaid magenta bags contain 2 clear lavender bags, 3 clear teal bags, 4 vibrant gold bags.');
     expect(bag.color,'Bag Color').to.equal('plaid magenta');

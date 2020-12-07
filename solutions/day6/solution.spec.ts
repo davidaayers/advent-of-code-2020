@@ -2,7 +2,7 @@ import { parseForPart1,parseForPart2 } from "./solution"
 import { expect } from 'chai';
 import 'mocha';
 
-describe ('Parse Input Test', () => {
+describe ('Day 6', () => {
   it('should parse input for part1 ', () => {
     var testInput = 
     `abc
