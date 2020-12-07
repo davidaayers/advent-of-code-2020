@@ -1,4 +1,4 @@
-import { parseLine,parseInput,countMatchingBags } from "./solution"
+import { parseLine,parseInput,findMatchingBags,countNestedBags } from "./solution"
 import { expect } from 'chai';
 import 'mocha';
 
@@ -24,8 +24,24 @@ dotted black bags contain no other bags.`
 
     var bags = parseInput(input);
     var solutionBags = new Set<string>();
-    countMatchingBags(bags, 'shiny gold', solutionBags);
+    findMatchingBags(bags, 'shiny gold', solutionBags);
     expect(solutionBags.size).to.equal(4);
-    
+
   });
+
+  it('should solve for part2', () => {
+    var input = 
+`shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags.`;
+    var bags = parseInput(input);
+    var cnt = countNestedBags(bags,'shiny gold');
+    expect(cnt).to.equal(126);
+
+  })
+
 });
