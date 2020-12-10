@@ -63,7 +63,7 @@ async function solveForFirstStar(input) {
 async function solveForSecondStar(input) {
   var seats = input.split('\n').map(i => {
     return decodeBoardingPassString(i);
-  }).map(bp => {return bp.seatId}).sort(function(a, b){return a-b});
+  }).map(bp => {return bp.seatId}).sort((a, b) => {return a-b});
 
   var solution = -1;
   for (var idx = 0; idx < seats.length - 1; idx ++) {

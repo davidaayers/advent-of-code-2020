@@ -1,7 +1,6 @@
 import { parseInput,findOutOfPlaceNumber,findWeakness } from "./solution"
 import { expect } from 'chai';
 import 'mocha';
-import { assert } from "console";
 
 describe ('Day 9', () => {
 
