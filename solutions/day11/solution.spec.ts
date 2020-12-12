@@ -2,7 +2,7 @@ import { parseInput, runGeneration, printSeatMap, matches } from "./solution"
 import { expect } from 'chai';
 import 'mocha';
 
-describe ('Day 9', () => {
+describe ('Day 11', () => {
 
   var input = 
   `L.LL.LL.LL
