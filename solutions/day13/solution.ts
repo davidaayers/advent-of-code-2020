@@ -21,7 +21,6 @@ async function solveForFirstStar(input) {
   var [startMinuteStr,bussesStr] = input.split('\n');
   var startMinute = +startMinuteStr;
   var busses = bussesStr.split(',').filter(b=> b != 'x');
-  console.log(busses);
 
   var currentMinute = startMinute;
   var searchingForBus = true;
@@ -43,6 +42,11 @@ async function solveForFirstStar(input) {
 }
 
 async function solveForSecondStar(input) {
+  var [,bussesStr] = input.split('\n');
+  var busses = bussesStr.split(',');
+
+
+
   const solution = "UNSOLVED";
   report("Second star solution:", solution);
 }
