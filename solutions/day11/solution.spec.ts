@@ -1,4 +1,4 @@
-import { parseInput, runGeneration, printSeatMap, matches } from "./solution"
+import { parseInput, runGeneration, printSeatMap, matches, calcAdjacentSeats,calcAdjacentSeats2 } from "./solution"
 import { expect } from 'chai';
 import 'mocha';
 
@@ -16,7 +16,7 @@ describe ('Day 11', () => {
   L.LLLLLL.L
   L.LLLLL.LL`;
 
-  it('Properly runs a two generations', () => {
+  it('Part1: Properly runs a two generations', () => {
     var expected1 = parseInput(
    `#.##.##.##
     #######.##
@@ -40,8 +40,8 @@ describe ('Day 11', () => {
     #.LLLLLL.L
     #.#LLLL.##`);
     var seatMap = parseInput(input);
-    var gen1 = runGeneration(seatMap);
-    var gen2 = runGeneration(gen1);
+    var gen1 = runGeneration(seatMap,calcAdjacentSeats,4);
+    var gen2 = runGeneration(gen1,calcAdjacentSeats,4);
     //console.log('Gen1')
     //printSeatMap(gen1);
     //console.log('Gen2')
@@ -49,5 +49,28 @@ describe ('Day 11', () => {
     expect(matches(gen1,expected1),'Gen 1 matches').to.equal(true);
     expect(matches(gen2,expected2),'Gen 2 matches').to.equal(true);
   })
+
+  it('Part2: works', () => {
+    var seatMap = parseInput(input);
+    var generations = 0;
+  
+    while (true) {
+      var nextGen = runGeneration(seatMap,calcAdjacentSeats2,5);
+      console.log('generate ' + generations);
+      printSeatMap(nextGen);
+      if ( matches(seatMap, nextGen) ) {
+        break;
+      }
+      generations++;
+      seatMap = nextGen;
+    }
+  
+    var occupiedSeats = seatMap.map<number>(line => {
+      return line.map<number>(s => {
+        return s === '#' ? 1 : 0;
+      }).reduce((a,b) => a + b,0);
+    }).reduce((a,b) => a + b,0)  
+    expect(occupiedSeats).to.equal(26);
+  });
 
 });

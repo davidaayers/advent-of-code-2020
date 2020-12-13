@@ -30,17 +30,17 @@ export function parseInput(input:string) : string[][] {
     If a seat is occupied (#) and four or more seats adjacent to it are also occupied, the seat becomes empty.
     Otherwise, the seat's state does not change.
 */
-export function runGeneration(seatMap:string[][]) : string[][] {
+export function runGeneration(seatMap:string[][],calcSeats:Function,upperBounds:number) : string[][] {
   var newSeatMap:string[][] = [];
   //console.log('About to run generation');
   for (var y = 0; y < seatMap.length; y++ ) {
     newSeatMap[y] = [];
     for ( var x = 0 ; x < seatMap[y].length; x++ ) {
 
-      var newState = seatMap[y][x];
-      var numAdjacentSeats = calcAdjacentSeats(x,y,seatMap);
+      var newState = seatMap[y][x];      
+      var numAdjacentSeats = calcSeats(x,y,seatMap);
       if ( newState === 'L' && numAdjacentSeats === 0 ) newState = '#';
-      else if ( newState === '#' && numAdjacentSeats >= 4 ) newState = 'L';
+      else if ( newState === '#' && numAdjacentSeats >= upperBounds ) newState = 'L';
 
       // Otherwise, the seat's state does not change
       newSeatMap[y][x] = newState;
@@ -51,30 +51,61 @@ export function runGeneration(seatMap:string[][]) : string[][] {
   return newSeatMap;
 }
 
-export function calcAdjacentSeats(x:number, y:number, seatMap:string[][]) : number {
-  var deltas:number[][] = [
-    [ 0, -1 ],  // N
-    [ 1, -1 ],  // NE
-    [ 1, 0 ],   // E
-    [ 1 ,1 ],   // SE
-    [ 0, 1 ],   // S
-    [ -1, 1 ],  // SW
-    [ -1, 0 ],  // W
-    [ -1, -1 ], // NW
-  ];
+const deltas:number[][] = [
+  [ 0, -1 ],  // N
+  [ 1, -1 ],  // NE
+  [ 1, 0 ],   // E
+  [ 1 ,1 ],   // SE
+  [ 0, 1 ],   // S
+  [ -1, 1 ],  // SW
+  [ -1, 0 ],  // W
+  [ -1, -1 ], // NW
+];
 
+export function calcAdjacentSeats(x:number, y:number, seatMap:string[][]) : number {
   return deltas.map<number>( d=> {
     var checkX = x+d[0];
     var checkY = y+d[1];
 
-    //console.log('x,y ' + x + ',' + y + ' checkX,checkY ' + checkX + ',' + checkY + ' dx,dy ' + d[0] + ',' + d[1]);
-
-    if ( checkX < 0 || checkX > seatMap[0].length-1 || checkY < 0 || checkY > seatMap.length-1 ){
-      //console.log('out of range');
+    if ( !isInBounds(checkX,checkY,seatMap)){
       return 0;
     }
     return seatMap[checkY][checkX] === '#' ? 1 : 0;
   }).reduce((a,b) => a + b, 0);
+}
+
+export function calcAdjacentSeats2(x:number, y:number, seatMap:string[][]) : number {
+  return deltas.map<number>( d=> {
+    var checkX = x+d[0];
+    var checkY = y+d[1];
+    //x=0,y=1
+    while(isInBounds(checkX,checkY,seatMap)) {
+      if( x === 0 && y === 1 ) {
+        console.log('at (0,1), direction looking:')
+        console.log(d);
+        console.log('checkX='+checkX+' checkY='+checkY+ 'tile='+seatMap[checkY][checkX]);
+      }
+      if (seatMap[checkY][checkX] === '#') {
+        if( x === 0 && y === 1 ) console.log('found a full seat, returning 1');
+        return 1;
+      }
+      if (seatMap[checkY][checkX] === 'L') {
+        if( x === 0 && y === 1 ) console.log('found an empty seat, return 0');
+        return 0;
+      }
+      checkX += d[0];
+      checkY += d[1];
+    }
+    if( x === 0 && y === 1 ) console.log('ran off the map, returning 0');
+    return 0;
+  }).reduce((a,b) => a + b, 0);
+}
+
+function isInBounds(x:number, y:number, seatMap:string[][]):boolean {
+  if ( x < 0 || x > seatMap[0].length-1 || y < 0 || y > seatMap.length-1 ){
+    return false;
+  }
+  return true;
 }
 
 export function printSeatMap(seatMap:string[][]) {
@@ -99,7 +130,7 @@ async function solveForFirstStar(input) {
   var generations = 0;
 
   while (true) {
-    var nextGen = runGeneration(seatMap);
+    var nextGen = runGeneration(seatMap,calcAdjacentSeats,4);
     if ( matches(seatMap, nextGen) ) {
       break;
     }
@@ -117,6 +148,25 @@ async function solveForFirstStar(input) {
 }
 
 async function solveForSecondStar(input) {
-  const solution = "UNSOLVED";
-  report("Second star solution:", solution);
+  var seatMap = parseInput(input);
+  var generations = 0;
+
+  while (true) {
+    var nextGen = runGeneration(seatMap,calcAdjacentSeats2,5);
+    console.log('generate ' + generations);
+    printSeatMap(nextGen);
+    if ( matches(seatMap, nextGen) ) {
+      break;
+    }
+    generations++;
+    seatMap = nextGen;
+  }
+
+  var occupiedSeats = seatMap.map<number>(line => {
+    return line.map<number>(s => {
+      return s === '#' ? 1 : 0;
+    }).reduce((a,b) => a + b,0);
+  }).reduce((a,b) => a + b,0)
+
+  report("Second star solution:", occupiedSeats.toString());
 }
